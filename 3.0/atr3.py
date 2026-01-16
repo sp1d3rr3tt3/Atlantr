@@ -1,9 +1,9 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 #- * -coding: utf-8 - * -
 
 # Author: sup3ria
 # Version: 3.1
-# Python Version: 2.7
+# Python Version: 3.x (updated from 2.7)
 
 import os
 import time

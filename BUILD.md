@@ -106,7 +106,7 @@ To clean all build artifacts:
 make clean
 
 # Manual
-rm -rf build/ dist/ *.spec
+rm -rf build/ dist/
 ```
 
 ## Advanced Build Options
