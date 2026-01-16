@@ -5,15 +5,40 @@
 
 Atlantr is a tool to validate login credentials of email accounts via the IMAP protocol. 
 Green threads (Gevent) are used to implement concurrent and asynchronous networking.
-### system requirements:
-- Python 2.7.x
+
+### System Requirements:
+- Python 3.x (updated from Python 2.7)
 - Gevent (pip install gevent)
 - tqdm (pip install tqdm)
 - 512MB RAM
 - Linux preferred (faster)
-#### Example usage:
+
+## Building Atlantr
+
+To build an executable version of Atlantr, see [BUILD.md](BUILD.md) for detailed instructions.
+
+Quick build:
+```bash
+# Linux/Mac
+./build.sh
+
+# Or using Make
+make build
+
+# Windows
+build.bat
 ```
-python atr3.py -i input.txt -o output.txt -t 1000 -g true 
+
+The executable will be created in the `dist/` directory.
+
+#### Example usage:
+```bash
+# From source
+cd 3.0
+python3 atr3.py -i input.txt -o output.txt -t 1000 -g true
+
+# Using built executable
+./dist/atlantr -i input.txt -o output.txt -t 1000 -g true
 ```
 #### Optional Arguments:
 If no optional arguments are provided the default values are used.
@@ -85,8 +110,9 @@ The returned ip should be different when proxychains is used!
 curl https://api.ipify.org/tformat=text
 ```
 Start Atlantr like this:
-```
-sudo proxychains python atr3.py 
+```bash
+cd 3.0
+sudo proxychains python3 atr3.py 
 ```
 Note that Proxychains can be configured to work with Socks5 and other types of proxies. There are good Tutorials to find via Google.
 ##
