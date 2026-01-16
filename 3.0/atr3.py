@@ -230,6 +230,12 @@ def get_port(host):
     else:
         return int(host[1])
 
+# gets base filename without extension
+
+
+def get_base_filename(filename):
+    return filename[:-4]
+
 # send sentinal values to writer queues
 
 
@@ -378,14 +384,14 @@ def writer_valid():
 
 def writer_invalid():
     if invunma:
-        generic_writer(q_invalid, file_in[:-4] + "_invalid.txt")
+        generic_writer(q_invalid, get_base_filename(file_in) + "_invalid.txt")
 
 # writing unmachted lines to disk
 
 
 def writer_unmatched():
     if invunma:
-        generic_writer(q_unmatched, file_in[:-4] + "_unmatched.txt")
+        generic_writer(q_unmatched, get_base_filename(file_in) + "_unmatched.txt")
 
 # writing grabbed emails to disk
 
@@ -401,10 +407,10 @@ def writer_grabber():
                     if sen_count < 1:
                         break
                 else:
-                    with open((file_in[:-4]+"_grabbed_" +str(t[2]) + ".txt"), "a") as ff:
+                    with open((get_base_filename(file_in)+"_grabbed_" +str(t[2]) + ".txt"), "a") as ff:
                               ff.write(str(t[0][0])+":"+str(t[0][1])+"\n")
                     if grabb_perfor == False:
-                        path = "grabbed_"+file_in[:-4]+"/"+str(t[2])+"/"+str(t[0])+"/"
+                        path = "grabbed_"+get_base_filename(file_in)+"/"+str(t[2])+"/"+str(t[0])+"/"
                         make_sure_path_exists(path)
                         hash_object = hashlib.sha1(str(t[1]))
                         hex_dig = hash_object.hexdigest()
