@@ -17,7 +17,7 @@ install:
 
 clean:
 	@echo "Cleaning build artifacts..."
-	rm -rf build/ dist/ *.spec __pycache__/
+	rm -rf build/ dist/ __pycache__/
 	find . -type d -name "*.egg-info" -exec rm -rf {} + 2>/dev/null || true
 	find . -type f -name "*.pyc" -delete
 	find . -type d -name "__pycache__" -exec rm -rf {} + 2>/dev/null || true

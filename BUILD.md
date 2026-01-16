@@ -7,6 +7,16 @@ This document describes how to build Atlantr IMAP Checker.
 - Python 3.x
 - pip (Python package manager)
 
+## Important Note
+
+The code has been updated for Python 3 compatibility. The main changes include:
+- Converted `print` statements to `print()` functions
+- Replaced `xrange` with `range`
+- Updated `.iteritems()` to `.items()`
+- Removed deprecated `compiler` module import
+
+The original Python 2.7 code is backed up as `3.0/atr3.py.backup`.
+
 ## Quick Build
 
 ### Linux/Mac
