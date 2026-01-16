@@ -386,7 +386,7 @@ def writer_invalid():
     if invunma:
         generic_writer(q_invalid, get_base_filename(file_in) + "_invalid.txt")
 
-# writing unmachted lines to disk
+# writing unmatched lines to disk
 
 
 def writer_unmatched():
