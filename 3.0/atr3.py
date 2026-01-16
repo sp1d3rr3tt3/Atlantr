@@ -92,10 +92,7 @@ def grabberwrap(task, host):
 
 # login via imap_ssl, uses imap query on all inboxes, returns emails
 def email_grabber(a, b, host, q):
-    if len(host) < 2:
-        port = 993
-    else:
-        port = int(host[1])
+    port = get_port(host)
     socket.setdefaulttimeout(time_out)
     quer = q.split('|')[0].strip()
     query = q.split('|')[1].strip()
@@ -150,10 +147,7 @@ def imap(usr, pw, host):
     socket.setdefaulttimeout(time_out)
     usr = usr.lower()
     try:
-        if len(host) < 2:
-            port = 993
-        else:
-            port = int(host[1])
+        port = get_port(host)
         mail = imaplib.IMAP4_SSL(str(host[0]), port)
         a = str(mail.login(usr, pw))
         return a[2: 4]
@@ -226,6 +220,21 @@ def get_imapConfig(email):
         return ImapConfig[hoster]
     except BaseException:
         return False
+
+# extracts port from host configuration
+
+
+def get_port(host):
+    if len(host) < 2:
+        return 993
+    else:
+        return int(host[1])
+
+# gets base filename without extension
+
+
+def get_base_filename(filename):
+    return filename[:-4]
 
 # send sentinal values to writer queues
 
@@ -350,15 +359,13 @@ def init_ImapConfig():
 
 #---------------WRITERS---------------------------#
 
-# writing valid lines to disk
-
-
-def writer_valid():
+# generic writer for queue to file
+def generic_writer(queue, filename):
     try:
-        with open(file_out, "a") as f:
+        with open(filename, "a") as f:
             sen_count = workers
             while True:
-                t = q_valid.get(block=True)
+                t = queue.get(block=True)
                 if t == "SENTINAL":
                     sen_count -= 1
                     if sen_count < 1:
@@ -368,43 +375,25 @@ def writer_valid():
     except BaseException:
         pass
 
+# writing valid lines to disk
+
+
+def writer_valid():
+    generic_writer(q_valid, file_out)
+
 # writing invalid lines to disk
 
 
 def writer_invalid():
     if invunma:
-        try:
-            with open(file_in[:-4] + "_invalid.txt", "a") as f:
-                sen_count = workers
-                while True:
-                    t = q_invalid.get(block=True)
-                    if t == "SENTINAL":
-                        sen_count -= 1
-                        if sen_count < 1:
-                            break
-                    else:
-                        f.write(str(t) + "\n")
-        except BaseException:
-            pass
+        generic_writer(q_invalid, get_base_filename(file_in) + "_invalid.txt")
 
-# writing unmachted lines to disk
+# writing unmatched lines to disk
 
 
 def writer_unmatched():
     if invunma:
-        try:
-            with open(file_in[:-4] + "_unmatched.txt", "a") as f:
-                sen_count = workers
-                while True:
-                    t = q_unmatched.get(block=True)
-                    if t == "SENTINAL":
-                        sen_count -= 1
-                        if sen_count < 1:
-                            break
-                    else:
-                        f.write(str(t) + "\n")
-        except BaseException:
-            pass
+        generic_writer(q_unmatched, get_base_filename(file_in) + "_unmatched.txt")
 
 # writing grabbed emails to disk
 
@@ -420,10 +409,10 @@ def writer_grabber():
                     if sen_count < 1:
                         break
                 else:
-                    with open((file_in[:-4]+"_grabbed_" +str(t[2]) + ".txt"), "a") as ff:
+                    with open((get_base_filename(file_in)+"_grabbed_" +str(t[2]) + ".txt"), "a") as ff:
                               ff.write(str(t[0][0])+":"+str(t[0][1])+"\n")
                     if grabb_perfor == False:
-                        path = "grabbed_"+file_in[:-4]+"/"+str(t[2])+"/"+str(t[0])+"/"
+                        path = "grabbed_"+get_base_filename(file_in)+"/"+str(t[2])+"/"+str(t[0])+"/"
                         make_sure_path_exists(path)
                         hash_object = hashlib.sha1(str(t[1]))
                         hex_dig = hash_object.hexdigest()
