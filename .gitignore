@@ -1,0 +1,37 @@
+# Build artifacts
+build/
+dist/
+*.egg-info/
+
+# Backup files
+*.backup
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Virtual environments
+venv/
+env/
+ENV/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Output files
+mail_pass_valid.txt
+mail_pass_invalid.txt
+mail_pass_unmatched.txt
+*_grabbed_*.txt
+grabbed_*/
+last_line.log
+
+# Temporary files
+*.log
+.DS_Store

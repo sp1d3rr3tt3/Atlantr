@@ -1,9 +1,9 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 #- * -coding: utf-8 - * -
 
 # Author: sup3ria
 # Version: 3.1
-# Python Version: 2.7
+# Python Version: 3.x (updated from 2.7)
 
 import os
 import time
@@ -13,7 +13,7 @@ import itertools
 import argparse
 import signal
 import socket
-import compiler
+# import compiler  # Removed in Python 3, not used in code
 import email
 import errno
 import shutil
@@ -243,7 +243,7 @@ def send_sentinals():
 
 
 def handler(signum, frame):
-    print "\n[INFO]Shutting down gracefully (takes a while)"
+    print("\n[INFO]Shutting down gracefully (takes a while)")
     evt.set()
 
 # read in blocks for better speed
@@ -257,15 +257,17 @@ def blocks(files, size=65536):
         yield b
 
 
-def transform(expression):
-    if isinstance(expression, compiler.transformer.Expression):
-        return transform(expression.node)
-    elif isinstance(expression, compiler.transformer.Tuple):
-        return tuple(transform(item) for item in expression.nodes)
-    elif isinstance(expression, compiler.transformer.Const):
-        return expression.value
-    elif isinstance(expression, compiler.transformer.Name):
-        return None if expression.name == 'NIL' else expression.name
+# Unused transform function (was for compiler module which is removed in Python 3)
+# def transform(expression):
+#     if isinstance(expression, compiler.transformer.Expression):
+#         return transform(expression.node)
+#     elif isinstance(expression, compiler.transformer.Tuple):
+#         return tuple(transform(item) for item in expression.nodes)
+#     elif isinstance(expression, compiler.transformer.Const):
+#         return expression.value
+#     elif isinstance(expression, compiler.transformer.Name):
+#         return None if expression.name == 'NIL' else expression.name
+
 
 # get last line value from file generated when shutting down
 
@@ -309,7 +311,7 @@ def loader():
                                     pid = pid + 1
 
     except IOError:
-        print "[ERROR]No input file", file_in, "found!"
+        print("[ERROR]No input file", file_in, "found!")
     except BaseException:
         pass
 
@@ -323,11 +325,11 @@ def init_matchers():
             loaded_matchers = [line.strip() for line in text_file
                                if len(line.strip()) > 1]
             if len(loaded_matchers) < 1:
-                print "No matchers in", file_match
+                print("No matchers in", file_match)
                 grabactiv = False
 
     except BaseException:
-        print "[ERROR] Could not load any matchers, no file provided."
+        print("[ERROR] Could not load any matchers, no file provided.")
 
 # load Imap settings from file
 
@@ -342,7 +344,7 @@ def init_ImapConfig():
                     hoster = line.strip().split(':')
                     ImapConfig[hoster[0]] = (hoster[1], hoster[2])
     except BaseException:
-        print "[ERROR]hoster.dat", "not found!"
+        print("[ERROR]hoster.dat", "not found!")
 
 #/-----------LOADERS------------------------------#
 
@@ -462,7 +464,7 @@ def state():
                 pbar2.close()
                 try:
                     v = str(
-                        int(max(LastValue.iteritems(), key=lambda x: x[1])[1]) + 1)
+                        int(max(LastValue.items(), key=lambda x: x[1])[1]) + 1)
                 except BaseException:
                     break
                 try:
@@ -488,7 +490,7 @@ def state():
 def asynchronous():
     threads = []
     threads.append(gevent.spawn(loader))
-    for i in xrange(0, workers):
+    for i in range(0, workers):
         threads.append(gevent.spawn(worker, i))
     threads.append(gevent.spawn(writer_valid))
     threads.append(gevent.spawn(state))
@@ -506,12 +508,12 @@ def asynchronous():
             #if grabb_perfor == False:
                 #output_filename = "grabbed_" + time.strftime("%Y%m%d-%H%M%S")
                 #shutil.make_archive(output_filename, 'zip', "grabbed")
-    print "[INFO]Time elapsed: " + str(end - start)[:5], "seconds."
-    print "[INFO] Done."
+    print("[INFO]Time elapsed: " + str(end - start)[:5], "seconds.")
+    print("[INFO] Done.")
     evt.set()  # cleaning up
 
 
-print """
+print("""
        db              88
       d88b       ,d    88                         ,d
      d8'`8b      88    88                         88
@@ -521,7 +523,7 @@ print """
  d8'        `8b  88,   88 88,    ,88 88       88  88,   88
 d8'          `8b "Y888 88 `"8bbdP"Y8 88       88  "Y888 88
      Imap checker v3.0                          by sup3ria
-"""
+""")
 parser = argparse.ArgumentParser(description='Atlantr Imap Checker v3.1')
 parser.add_argument(
     '-i',
