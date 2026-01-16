@@ -126,7 +126,7 @@ def email_grabber(a, b, host, q):
                     email_message = email.message_from_string(raw_email_string)
                     messages.append(str(email_message))
                     if grabb_perfor:
-                        if len(messages>0):
+                        if len(messages) > 0:
                             return messages
 
                     #for part in email_message.walk():
